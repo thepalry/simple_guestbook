@@ -1,5 +1,4 @@
-NHN basecamp
+NHN basecamp 사전과제
 
-Planed end date : 12/27
-
-Due date : 1/1
+계획된 완료일 : 12/27
+제출 기한 : 1/1
