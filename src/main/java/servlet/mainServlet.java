@@ -59,7 +59,36 @@ public class mainServlet extends HttpServlet {
 			try { if ( stmt != null ) stmt.close(); } catch(Exception e) {}
 			try { if ( conn != null ) conn.close(); } catch(Exception e) {}
 		}
+	}
+	
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
 		
+		try {
+			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+			conn = DriverManager.getConnection(
+					"jdbc:mysql://localhost/studydb",
+					"study",
+					"study");
+			stmt = conn.prepareStatement("INSERT INTO GUESTBOOK(EMAIL, PWD, ARTICLE, CREATED_TIME, MODIFIED_TIME)"
+										+ " VALUES (?, ?, ?, now(), now()) ");
+			stmt.setString(1, request.getParameter("email"));
+			stmt.setString(2, request.getParameter("pwd"));
+			stmt.setString(3, request.getParameter("article"));
+			stmt.executeUpdate();
+			
+			doGet(request, response);
+			
+		} catch (Exception e){
+			throw new ServletException(e);
+		} finally {
+			try { if ( rs != null ) rs.close(); } catch(Exception e) {}
+			try { if ( stmt != null ) stmt.close(); } catch(Exception e) {}
+			try { if ( conn != null ) conn.close(); } catch(Exception e) {}
+		}
 	}
 }
