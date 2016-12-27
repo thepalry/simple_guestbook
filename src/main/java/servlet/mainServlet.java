@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,16 +23,14 @@ public class mainServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		ServletContext sc = null;
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		
-		try {
-			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-			conn = DriverManager.getConnection(
-					"jdbc:mysql://localhost/studydb",
-					"study",
-					"study");
+		try {	
+			sc = this.getServletContext();
+			conn = (Connection) sc.getAttribute("conn");
 			stmt = conn.prepareStatement("SELECT GNO, EMAIL, ARTICLE, CREATED_TIME, MODIFIED_TIME FROM GUESTBOOK");
 			rs = stmt.executeQuery();
 			
@@ -57,38 +56,31 @@ public class mainServlet extends HttpServlet {
 		} finally {
 			try { if ( rs != null ) rs.close(); } catch(Exception e) {}
 			try { if ( stmt != null ) stmt.close(); } catch(Exception e) {}
-			try { if ( conn != null ) conn.close(); } catch(Exception e) {}
 		}
 	}
 	
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		ServletContext sc = null;
 		Connection conn = null;
 		PreparedStatement stmt = null;
-		ResultSet rs = null;
 		
 		try {
-			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-			conn = DriverManager.getConnection(
-					"jdbc:mysql://localhost/studydb",
-					"study",
-					"study");
+			sc = this.getServletContext();
+			conn = (Connection) sc.getAttribute("conn");
 			stmt = conn.prepareStatement("INSERT INTO GUESTBOOK(EMAIL, PWD, ARTICLE, CREATED_TIME, MODIFIED_TIME)"
-										+ " VALUES (?, ?, ?, now(), now()) ");
+					+ " VALUES (?, ?, ?, now(), now()) ");
 			stmt.setString(1, request.getParameter("email"));
 			stmt.setString(2, request.getParameter("pwd"));
 			stmt.setString(3, request.getParameter("article"));
 			stmt.executeUpdate();
-			
+
 			doGet(request, response);
-			
 		} catch (Exception e){
 			throw new ServletException(e);
 		} finally {
-			try { if ( rs != null ) rs.close(); } catch(Exception e) {}
 			try { if ( stmt != null ) stmt.close(); } catch(Exception e) {}
-			try { if ( conn != null ) conn.close(); } catch(Exception e) {}
 		}
 	}
 }
