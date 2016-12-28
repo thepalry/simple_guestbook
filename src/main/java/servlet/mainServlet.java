@@ -1,9 +1,7 @@
 package servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -15,47 +13,33 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import dao.GuestbookArticleDao;
 import vo.GuestbookArticle;
 
 @WebServlet("/list")
 public class mainServlet extends HttpServlet {
 
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		ServletContext sc = null;
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
 		try {	
-			sc = this.getServletContext();
-			conn = (Connection) sc.getAttribute("conn");
-			stmt = conn.prepareStatement("SELECT GNO, EMAIL, ARTICLE, CREATED_TIME, MODIFIED_TIME FROM GUESTBOOK");
-			rs = stmt.executeQuery();
+			ServletContext sc = this.getServletContext();
+			Connection conn = (Connection) sc.getAttribute("conn");
 			
-			response.setContentType("text/html; charset=UTF-8");
-			ArrayList<GuestbookArticle> articles = new ArrayList<GuestbookArticle>();
-		
-			while(rs.next()) {
-				GuestbookArticle article = new GuestbookArticle();
-				article.setGno(rs.getInt("GNO"));
-				article.setEmail(rs.getString("EMAIL"));
-				article.setArticle(rs.getString("ARTICLE"));
-				article.setCreatedTime(rs.getDate("CREATED_TIME"));
-				article.setModifiedTime(rs.getDate("MODIFIED_TIME"));
-				articles.add(article);
-			}
+			GuestbookArticleDao guestbookArticleDao = new GuestbookArticleDao();
+			guestbookArticleDao.setConnection(conn);
+			
+			ArrayList<GuestbookArticle> articles = guestbookArticleDao.getList();
 			request.setAttribute("articles" , articles);
 			
+			response.setContentType("text/html; charset=UTF-8");
 			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/main.jsp");
 			rd.include(request, response);
-			
 		} catch (Exception e){
-			throw new ServletException(e);
-		} finally {
-			try { if ( rs != null ) rs.close(); } catch(Exception e) {}
-			try { if ( stmt != null ) stmt.close(); } catch(Exception e) {}
+			e.printStackTrace();
+			request.setAttribute("error", e);
+			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/error.jsp");
+			rd.forward(request, response);
 		}
 	}
 	
