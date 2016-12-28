@@ -24,7 +24,9 @@
 	</form>
 	
 	<h2>목록</h2>
-	
+	<a href="list.do?orderCond=CREATED_TIME">작성 시간 순서</a>
+	<a href="list.do?orderCond=MODIFIED_TIME">수정 시간 순서</a>
+	<br><br>
 	<c:forEach var="article" items="${articles}">
 	등록번호 : ${article.gno}
 	이메일 : ${article.email}

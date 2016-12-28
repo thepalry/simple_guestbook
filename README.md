@@ -23,3 +23,5 @@ mybatis 3.4.1
 jQuery 3.1.1
 
 maven 3.3.9
+
+jUnit 4.12
