@@ -12,7 +12,7 @@
         http://www.springframework.org/schema/jee 
         http://www.springframework.org/schema/jee/spring-jee.xsd">
 
-	<context:component-scan base-package="guestbook" />
+	<context:component-scan base-package="com.nhnbasecamp.guestbook" />
 	<jee:jndi-lookup id="dataSource" jndi-name="java:comp/env/jdbc/studydb" />
 	
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
@@ -21,8 +21,8 @@
 	
 	<bean id ="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
-		<property name="typeAliasesPackage" value="vo" />
-		<property name="mapperLocations" value="classpath*:guestbook/dao/*Dao.xml" />
+		<property name="typeAliasesPackage" value="com.nhnbasecamp.guestbook.vo" />
+		<property name="mapperLocations" value="classpath*:com/nhnbasecamp/guestbook/dao/*Dao.xml" />
 	</bean>
 	
 
