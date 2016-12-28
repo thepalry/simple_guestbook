@@ -1,5 +1,6 @@
 package control;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,8 +28,14 @@ public class mainController implements Controller {
 			guestbookArticle.setArticle((String) model.get("article"));
 			guestbookArticleDao.insertArticle(guestbookArticle);
 		}
-
-		List<GuestbookArticle> articles = guestbookArticleDao.getList();
+		
+		HashMap<String, Object> paramMap = new HashMap<String, Object>();
+		if(model.get("orderCond") != null)
+			paramMap.put("orderCond", (String) model.get("orderCond"));
+		else
+			paramMap.put("orderCond", "MODIFIED_TIME");
+		
+		List<GuestbookArticle> articles = guestbookArticleDao.getList(paramMap);
 		model.put("articles" , articles);
 		
 		return "/WEB-INF/views/main.jsp";

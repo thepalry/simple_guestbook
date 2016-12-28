@@ -1,5 +1,6 @@
 package dao;
 
+import java.util.HashMap;
 import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -14,10 +15,10 @@ public class MysqlGuestbookArticleDao implements GuestbookArticleDao {
 		this.sqlSessionFactory = sqlSessionFactory;
 	}
 	
-	public List<GuestbookArticle> getList() throws Exception {
+	public List<GuestbookArticle> getList(HashMap<String, Object> paramMap) throws Exception {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {
-			return sqlSession.selectList("dao.GuestbookArticleDao.selectList");
+			return sqlSession.selectList("dao.GuestbookArticleDao.selectList", paramMap);
 		} finally {
 			sqlSession.close();
 		}

@@ -13,10 +13,14 @@
  		<result column="MODIFIED_TIME"	property="modifiedTime" javaType="java.sql.Date" />
  	</resultMap>
  	
- 	<select id="selectList" resultMap="GuestbookArticleResultMap">
+ 	<select id="selectList" resultMap="GuestbookArticleResultMap" parameterType="map">
  		SELECT GNO, EMAIL, ARTICLE, CREATED_TIME, MODIFIED_TIME
  		FROM GUESTBOOK
-		ORDER BY CREATED_TIME DESC
+		ORDER BY
+		<choose>
+			<when test="orderCond == 'CREATED_TIME'">CREATED_TIME DESC</when>
+			<when test="orderCond == 'MODIFIED_TIME'">MODIFIED_TIME DESC</when>
+		</choose>
  	</select>
  	
  	<insert id="insert" parameterType="GuestbookArticle">

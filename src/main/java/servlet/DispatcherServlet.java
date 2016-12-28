@@ -28,11 +28,12 @@ public class DispatcherServlet extends HttpServlet {
 			ServletContext sc = this.getServletContext();
 			
 			HashMap<String, Object> model = new HashMap<String, Object>();
-			model.put("session", request.getSession());;
+			model.put("session", request.getSession());
 			
 			Controller pageController = (Controller) sc.getAttribute(servletPath); 
 			
 			if("/list.do".equals(servletPath)) {
+				model.put("orderCond", (String) request.getParameter("orderCond"));
 			}
 			
 			String viewUrl = pageController.execute(model);
