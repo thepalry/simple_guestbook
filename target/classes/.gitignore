@@ -1,5 +1,4 @@
-/listener/
 /dao/
-/servlet/
+/listener/
 /control/
-/bind/
+/servlet/

@@ -1,14 +1,17 @@
 package listener;
 
-import javax.naming.InitialContext;
+import java.io.InputStream;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
-import javax.sql.DataSource;
+
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import control.mainController;
-import dao.GuestbookArticleDao;
 import dao.MysqlGuestbookArticleDao;
 
 @WebListener
@@ -18,11 +21,12 @@ public class ContextLoaderListener implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent event) {
 		try {
 			ServletContext sc = event.getServletContext();
-			InitialContext initialContext = new InitialContext();
-			DataSource ds = (DataSource) initialContext.lookup("java:comp/env/jdbc/studydb");
-			
+			String resource = "dao/mybatis-config.xml";
+			InputStream inputStream = Resources.getResourceAsStream(resource);
+			SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+
 			MysqlGuestbookArticleDao guestbookArticleDao = new MysqlGuestbookArticleDao();
-			guestbookArticleDao.setDataSource(ds);
+			guestbookArticleDao.setSqlSessionFactory(sqlSessionFactory);
 			
 			sc.setAttribute("/list.do", new mainController(guestbookArticleDao));
 

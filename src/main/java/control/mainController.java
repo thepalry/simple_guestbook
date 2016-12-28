@@ -1,6 +1,6 @@
 package control;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import dao.GuestbookArticleDao;
@@ -20,13 +20,15 @@ public class mainController implements Controller {
 	@Override
 	public String execute(Map<String, Object> model) throws Exception {
 		
-		if(model.get("email") != null)
-			guestbookArticleDao.insertArticle(
-				(String) model.get("email"),
-				(String) model.get("pwd"),
-				(String) model.get("article"));
+		if(model.get("email") != null) {
+			GuestbookArticle guestbookArticle = new GuestbookArticle();
+			guestbookArticle.setEmail((String) model.get("email"));
+			guestbookArticle.setPwd((String) model.get("pwd"));
+			guestbookArticle.setArticle((String) model.get("article"));
+			guestbookArticleDao.insertArticle(guestbookArticle);
+		}
 
-		ArrayList<GuestbookArticle> articles = guestbookArticleDao.getList();
+		List<GuestbookArticle> articles = guestbookArticleDao.getList();
 		model.put("articles" , articles);
 		
 		return "/WEB-INF/views/main.jsp";

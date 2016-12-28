@@ -4,10 +4,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-<title>Insert title here</title>
+<title>에러 발생</title>
 </head>
 <body text-aling="center">
 문제가 발생했습니다.
-<a href="main.jsp">메인 화면으로</a>
+<a href="list.do">메인 화면으로</a>
 </body>
 </html>
