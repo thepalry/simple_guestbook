@@ -36,7 +36,18 @@ public class MysqlGuestbookArticleDao implements GuestbookArticleDao {
 	public int insertArticle(GuestbookArticle guestbookArticle) throws Exception {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {
-			int count = sqlSession.insert("dao.GuestbookArticleDao.insert");
+			int count = sqlSession.insert("dao.GuestbookArticleDao.insert", guestbookArticle);
+			sqlSession.commit();
+			return count;
+		} finally {
+			sqlSession.close();
+		}
+	}
+	
+	public int updateArticle(GuestbookArticle guestbookArticle) throws Exception {
+		SqlSession sqlSession = sqlSessionFactory.openSession();
+		try {
+			int count = sqlSession.update("dao.GuestbookArticleDao.update", guestbookArticle);
 			sqlSession.commit();
 			return count;
 		} finally {

@@ -15,7 +15,7 @@
 
 	<h1>방명록</h1>
 	
-	<form action="list" method="post">
+	<form action="list.do?orderCond=${param.orderCond}" method="post">
 		이메일 : <input type="text" name="email" size="20"><br>
 		비밀번호 : <input type="password" name="pwd" size="20"><br>
 		내용 : <input type="text" name="article" size="100"><br>
@@ -31,8 +31,13 @@
 	이메일 : ${article.email}
 	등록 시간 : ${article.createdTime}
 	수정 시간 : ${article.modifiedTime}
-	<a href='Update?no=${article.gno}'><button>수정</button></a>
 	<p>내용 : </p>${article.article}
+	<form action="update" method="post">
+		<input type="hidden" name="gno" value="${article.gno}">
+		<input type="hidden" name="email" value="${article.email}">
+		<input type="hidden" name="article" value="${article.article}">
+		<input type="submit" value="수정">
+	</form>
 	<br><br>
 	</c:forEach>
 	

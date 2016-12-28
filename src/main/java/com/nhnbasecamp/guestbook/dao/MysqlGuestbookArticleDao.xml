@@ -27,4 +27,10 @@
  		INSERT INTO GUESTBOOK(EMAIL, PWD, ARTICLE, CREATED_TIME, MODIFIED_TIME)
 					VALUES (#{email}, #{pwd}, #{article}, now(), now())
  	</insert>
+ 	
+ 	<update id="update" parameterType="GuestbookArticle">
+ 		UPDATE GUESTBOOK
+ 		SET ARTICLE = #{article}, MODIFIED_TIME = now()
+ 		WHERE EMAIL = #{email} AND PWD = #{pwd} AND GNO = #{gno}
+ 	</update>
  </mapper>

@@ -15,13 +15,15 @@
 
 	<h1>방명록  수정</h1>
 	
+	등록번호 : ${param.gno}
+	이메일 : ${param.email}
 	<form action="update" method="post">
-		등록번호 : ${article.gno}
-		이메일 : ${article.email}
-		비밀번호 : <input type="text" name="pwd" size="20"><br>
-		내용 : <input type="text" name="article" size="100"><br>
+		<input type="hidden" name="gno" value="${param.gno}">
+		<input type="hidden" name="email" value="${param.email}">
+		비밀번호 : <input type="password" name="pwd" size="20"><br>
+		내용 : <input type="text" name="article" size="100" value="${param.article}"><br>
 		<input type="submit" value="수정">
-		<a href='list'><button>취소</button></a>
+		<a href='/list.do'><button>취소</button></a>
 	</form>
 	
 	<jsp:include page="Tail.jsp"/>
