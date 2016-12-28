@@ -3,7 +3,6 @@ package servlet;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
@@ -24,10 +23,7 @@ public class mainServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
 		try {	
 			ServletContext sc = this.getServletContext();
-			Connection conn = (Connection) sc.getAttribute("conn");
-			
-			GuestbookArticleDao guestbookArticleDao = new GuestbookArticleDao();
-			guestbookArticleDao.setConnection(conn);
+			GuestbookArticleDao guestbookArticleDao = (GuestbookArticleDao) sc.getAttribute("guestbookArticleDao");
 			
 			ArrayList<GuestbookArticle> articles = guestbookArticleDao.getList();
 			request.setAttribute("articles" , articles);
