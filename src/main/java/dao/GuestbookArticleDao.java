@@ -5,24 +5,26 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-import javax.servlet.ServletContext;
+import javax.sql.DataSource;
 
 import vo.GuestbookArticle;
 
 public class GuestbookArticleDao {
 	
-	Connection connection;
+	DataSource ds;
 	
-	public void setConnection(Connection connection) {
-		this.connection = connection;
+	public void setDataSource(DataSource ds) {
+		this.ds = ds;
 	}
 
 	public ArrayList<GuestbookArticle> getList() throws Exception {
+		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		
 		try {
-			stmt = connection.prepareStatement("SELECT GNO, EMAIL, ARTICLE, CREATED_TIME, MODIFIED_TIME FROM GUESTBOOK");
+			conn = ds.getConnection();
+			stmt = conn.prepareStatement("SELECT GNO, EMAIL, ARTICLE, CREATED_TIME, MODIFIED_TIME FROM GUESTBOOK");
 			rs = stmt.executeQuery();
 			
 			ArrayList<GuestbookArticle> articles = new ArrayList<GuestbookArticle>();
@@ -40,8 +42,9 @@ public class GuestbookArticleDao {
 		} catch (Exception e) {
 			throw e;
 		} finally {
-			try { if ( rs != null ) rs.close(); } catch(Exception e) {}
+			try { if ( conn != null ) conn.close(); } catch(Exception e) {}
 			try { if ( stmt != null ) stmt.close(); } catch(Exception e) {}
+			try { if ( rs != null ) rs.close(); } catch(Exception e) {}
 		}
 	}
 }

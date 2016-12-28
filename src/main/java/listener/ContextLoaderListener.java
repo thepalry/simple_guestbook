@@ -1,33 +1,27 @@
 package listener;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-
+import javax.naming.InitialContext;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
+import javax.sql.DataSource;
 
 import dao.GuestbookArticleDao;
 
 @WebListener
 public class ContextLoaderListener implements ServletContextListener {
-
-	Connection connection;
 	
 	@Override
 	public void contextInitialized(ServletContextEvent event) {
 		try {
 			ServletContext sc = event.getServletContext();
 			
-			Class.forName(sc.getInitParameter("driver"));
-			connection = DriverManager.getConnection(
-					sc.getInitParameter("url"),
-					sc.getInitParameter("username"),
-					sc.getInitParameter("password"));
+			InitialContext initialContext = new InitialContext();
+			DataSource ds = (DataSource) initialContext.lookup("java:comp/env/jdbc/guestbook");
 			
 			GuestbookArticleDao guestbookArticleDao = new GuestbookArticleDao();
-			guestbookArticleDao.setConnection(connection);
+			guestbookArticleDao.setDataSource(ds);
 
 			sc.setAttribute("guestbookArticleDao", guestbookArticleDao);
 		} catch (Exception e) {
@@ -36,13 +30,5 @@ public class ContextLoaderListener implements ServletContextListener {
 	}
 	
 	@Override
-	public void contextDestroyed(ServletContextEvent event) {
-		try {
-			if(connection != null && connection.isClosed() == false)
-				connection.close();
-		} catch (Exception e) {
-		}
-	}
-
-
+	public void contextDestroyed(ServletContextEvent event) {}
 }
