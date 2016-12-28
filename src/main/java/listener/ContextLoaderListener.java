@@ -7,7 +7,9 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 import javax.sql.DataSource;
 
+import control.mainController;
 import dao.GuestbookArticleDao;
+import dao.MysqlGuestbookArticleDao;
 
 @WebListener
 public class ContextLoaderListener implements ServletContextListener {
@@ -19,10 +21,11 @@ public class ContextLoaderListener implements ServletContextListener {
 			InitialContext initialContext = new InitialContext();
 			DataSource ds = (DataSource) initialContext.lookup("java:comp/env/jdbc/studydb");
 			
-			GuestbookArticleDao guestbookArticleDao = new GuestbookArticleDao();
+			MysqlGuestbookArticleDao guestbookArticleDao = new MysqlGuestbookArticleDao();
 			guestbookArticleDao.setDataSource(ds);
+			
+			sc.setAttribute("/list.do", new mainController(guestbookArticleDao));
 
-			sc.setAttribute("guestbookArticleDao", guestbookArticleDao);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

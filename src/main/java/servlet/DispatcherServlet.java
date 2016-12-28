@@ -1,15 +1,21 @@
 package servlet;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-//@WebServlet("*.do")
+import control.Controller;
+import control.mainController;
+
+@WebServlet("*.do")
 public class DispatcherServlet extends HttpServlet {
 	
 	@Override
@@ -21,20 +27,27 @@ public class DispatcherServlet extends HttpServlet {
 		String servletPath = request.getServletPath();
 		
 		try {
-			String pageControllerPath = null;
-			if("guestbook/list.do".equals(servletPath)) {
-				pageControllerPath = "guestbook/list";
+			ServletContext sc = this.getServletContext();
+			
+			HashMap<String, Object> model = new HashMap<String, Object>();
+			model.put("session", request.getSession());;
+			
+			Controller pageController = (Controller) sc.getAttribute(servletPath); 
+			
+			if("/list.do".equals(servletPath)) {
 			}
 			
-			RequestDispatcher rd = request.getRequestDispatcher(pageControllerPath);
-			rd.include(request, response);
+			String viewUrl = pageController.execute(model);
 			
-			String viewUrl = (String) request.getAttribute("viewUrl");
+			for(String key : model.keySet()) {
+				request.setAttribute(key, model.get(key));
+			}
+				
 			if(viewUrl.startsWith("redirect:")) {
 				response.sendRedirect(viewUrl.substring(9));
 				return;
 			} else {
-				rd = request.getRequestDispatcher(viewUrl);
+				RequestDispatcher rd = request.getRequestDispatcher(viewUrl);
 				rd.include(request, response);
 			}
 		} catch (Exception e) {

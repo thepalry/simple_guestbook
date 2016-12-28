@@ -8,6 +8,6 @@
 </head>
 <body text-aling="center">
 문제가 발생했습니다.
-<a href="list.jsp">메인 화면으로</a>
+<a href="list.do">메인 화면으로</a>
 </body>
 </html>
