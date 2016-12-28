@@ -1,8 +1,6 @@
 package servlet;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
@@ -24,7 +22,7 @@ public class mainServlet extends HttpServlet {
 		try {	
 			ServletContext sc = this.getServletContext();
 			GuestbookArticleDao guestbookArticleDao = (GuestbookArticleDao) sc.getAttribute("guestbookArticleDao");
-			
+
 			ArrayList<GuestbookArticle> articles = guestbookArticleDao.getList();
 			request.setAttribute("articles" , articles);
 			
@@ -41,26 +39,20 @@ public class mainServlet extends HttpServlet {
 	
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		ServletContext sc = null;
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		
 		try {
-			sc = this.getServletContext();
-			conn = (Connection) sc.getAttribute("conn");
-			stmt = conn.prepareStatement("INSERT INTO GUESTBOOK(EMAIL, PWD, ARTICLE, CREATED_TIME, MODIFIED_TIME)"
-					+ " VALUES (?, ?, ?, now(), now()) ");
-			stmt.setString(1, request.getParameter("email"));
-			stmt.setString(2, request.getParameter("pwd"));
-			stmt.setString(3, request.getParameter("article"));
-			stmt.executeUpdate();
+			ServletContext sc = this.getServletContext();
+			GuestbookArticleDao guestbookArticleDao = (GuestbookArticleDao) sc.getAttribute("guestbookArticleDao");
+			guestbookArticleDao.insertArticle(
+					request.getParameter("email"),
+					request.getParameter("pwd"),
+					request.getParameter("article"));
 
 			doGet(request, response);
 		} catch (Exception e){
-			throw new ServletException(e);
-		} finally {
-			try { if ( stmt != null ) stmt.close(); } catch(Exception e) {}
+			e.printStackTrace();
+			request.setAttribute("error", e);
+			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/error.jsp");
+			rd.forward(request, response);
 		}
 	}
 }

@@ -16,9 +16,8 @@ public class ContextLoaderListener implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent event) {
 		try {
 			ServletContext sc = event.getServletContext();
-			
 			InitialContext initialContext = new InitialContext();
-			DataSource ds = (DataSource) initialContext.lookup("java:comp/env/jdbc/guestbook");
+			DataSource ds = (DataSource) initialContext.lookup("java:comp/env/jdbc/studydb");
 			
 			GuestbookArticleDao guestbookArticleDao = new GuestbookArticleDao();
 			guestbookArticleDao.setDataSource(ds);
