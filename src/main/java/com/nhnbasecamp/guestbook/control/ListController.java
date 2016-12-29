@@ -3,6 +3,7 @@ package com.nhnbasecamp.guestbook.control;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,8 +40,13 @@ public class ListController {
 		else
 			paramMap.put("orderCond", "MODIFIED_TIME");
 		
-		List<GuestbookArticle> articles = guestbookArticleDao.getList(paramMap);
-		model.addAttribute("articles" , articles);
+		try {
+			List<GuestbookArticle> articles = guestbookArticleDao.getList(paramMap);
+			model.addAttribute("articles" , articles);
+		} catch (Exception e) {
+			model.addAttribute("error", "데이터를 받아오는데 문제가 발생하였습니다.");
+			return "Error";
+		}
 		
 		return "List";
 	}
@@ -52,23 +58,24 @@ public class ListController {
 			@RequestParam(value="pwd", required=true) String pwd,
 			@RequestParam(value="article", required=true) String article,
 			Model model) throws Exception {
+		
+		if(Pattern.matches(email, "^[_a-zA-Z0-9-\\.]+@[\\.a-zA-Z0-9-]+\\.[a-zA-Z]+$") == false) {
+			model.addAttribute("error", "이메일주소가 유효하지 않습니다.");
+			return "Error";
+		}
 
 		GuestbookArticle guestbookArticle = new GuestbookArticle();
 		guestbookArticle.setEmail(email);
 		guestbookArticle.setPwd(pwd);
 		guestbookArticle.setArticle(article);
-		guestbookArticleDao.insertArticle(guestbookArticle);
+		try {
+			guestbookArticleDao.insertArticle(guestbookArticle);
+		} catch (Exception e) {
+			model.addAttribute("error", "데이터를 입력하는데 문제가 발생하였습니다. 입력이 올바른지 학인해 주세요.");
+			return "Error";
+		}
 		
-		HashMap<String, Object> paramMap = new HashMap<String, Object>();
-		if(orderCond != null)
-			paramMap.put("orderCond", orderCond);
-		else
-			paramMap.put("orderCond", "MODIFIED_TIME");
-		
-		List<GuestbookArticle> articles = guestbookArticleDao.getList(paramMap);
-		model.addAttribute("articles" , articles);
-		
-		return "List";
+		return executeGET(orderCond, model);
 	}
 
 }

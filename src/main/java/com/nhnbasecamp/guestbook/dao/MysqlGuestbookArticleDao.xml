@@ -23,6 +23,13 @@
 		</choose>
  	</select>
  	
+ 	 <select id="selectOne" resultType="com.nhnbasecamp.guestbook.vo.GuestbookArticle" parameterType="GuestbookArticle">
+ 		SELECT GNO, EMAIL, ARTICLE
+ 		FROM GUESTBOOK
+		WHERE EMAIL = ${email}
+ 	</select>
+ 	
+ 	
  	<insert id="insert" parameterType="GuestbookArticle">
  		INSERT INTO GUESTBOOK(EMAIL, PWD, ARTICLE, CREATED_TIME, MODIFIED_TIME)
 					VALUES (#{email}, #{pwd}, #{article}, now(), now())

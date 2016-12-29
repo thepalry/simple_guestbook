@@ -45,7 +45,12 @@ public class UpdateController {
 		}
 		else { // 업데이트 요청
 			guestbookArticle.setPwd(pwd);
-			guestbookArticleDao.updateArticle(guestbookArticle);
+			try {
+				guestbookArticleDao.updateArticle(guestbookArticle);
+			} catch (Exception e) {
+				model.addAttribute("error", "데이터를 수정하는데 문제가 발생하였습니다.");
+				return "Error";
+			}
 			return "redirect:list";
 		}
 		
