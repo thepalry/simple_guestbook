@@ -42,7 +42,7 @@ public class ListController {
 			List<GuestbookArticle> articles = guestbookArticleDao.getList(paramMap);
 			model.addAttribute("articles" , articles);
 		} catch (Exception e) {
-			model.addAttribute("error", "µ¥ÀÌÅÍ¸¦ ¹Ş¾Æ¿À´Âµ¥ ¹®Á¦°¡ ¹ß»ıÇÏ¿´½À´Ï´Ù.");
+			model.addAttribute("error", "");
 			return "Error";
 		}
 		
@@ -58,7 +58,7 @@ public class ListController {
 			Model model) throws Exception {
 		
 		if(Pattern.matches("[\\w\\~\\-\\.]+@[\\w\\~\\-]+(\\.[\\w\\~\\-]+)+", email.trim()) == false) {
-			model.addAttribute("error", "ÀÌ¸ŞÀÏÁÖ¼Ò°¡ À¯È¿ÇÏÁö ¾Ê½À´Ï´Ù.");
+			model.addAttribute("error", "ì´ë©”ì¼ì£¼ì†Œê°€ ìœ íš¨í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
 			return "Error";
 		}
 
@@ -69,7 +69,7 @@ public class ListController {
 		try {
 			guestbookArticleDao.insertArticle(guestbookArticle);
 		} catch (Exception e) {
-			model.addAttribute("error", "µ¥ÀÌÅÍ¸¦ ÀÔ·ÂÇÏ´Âµ¥ ¹®Á¦°¡ ¹ß»ıÇÏ¿´½À´Ï´Ù. ÀÔ·ÂÀÌ ¿Ã¹Ù¸¥Áö ÇĞÀÎÇØ ÁÖ¼¼¿ä.");
+			model.addAttribute("error", "ë°ì´í„°ë¥¼ ì…ë ¥í•˜ëŠ”ë° ë¬¸ì œê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤. ì…ë ¥ì´ ì˜¬ë°”ë¥¸ì§€ í•™ì¸í•´ ì£¼ì„¸ìš”.");
 			return "Error";
 		}
 		

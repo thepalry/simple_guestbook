@@ -36,16 +36,16 @@ public class UpdateController {
 		guestbookArticle.setEmail(email);
 		guestbookArticle.setArticle(article);
 		
-		if(pwd == null) { // ¾÷µ¥ÀÌÆ® Ã¢ ¿äÃ» 
+		if(pwd == null) { // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® Ã¢ ï¿½ï¿½Ã» 
 			model.addAttribute("articles" , article);
 			return "Update";
 		}
-		else { // ¾÷µ¥ÀÌÆ® ¿äÃ»
+		else { // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½Ã»
 			guestbookArticle.setPwd(pwd);
 			try {
 				guestbookArticleDao.updateArticle(guestbookArticle);
 			} catch (Exception e) {
-				model.addAttribute("error", "µ¥ÀÌÅÍ¸¦ ¼öÁ¤ÇÏ´Âµ¥ ¹®Á¦°¡ ¹ß»ıÇÏ¿´½À´Ï´Ù.");
+				model.addAttribute("error", "ë°ì´í„°ë¥¼ ìˆ˜ì •í•˜ëŠ”ë° ë¬¸ì œê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤.");
 				return "Error";
 			}
 			return "redirect:list";
