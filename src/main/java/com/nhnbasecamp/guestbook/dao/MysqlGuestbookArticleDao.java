@@ -27,7 +27,7 @@ public class MysqlGuestbookArticleDao implements GuestbookArticleDao {
 	public List<GuestbookArticle> getList(HashMap<String, Object> paramMap) throws Exception {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {
-			return sqlSession.selectList("dao.GuestbookArticleDao.selectList", paramMap);
+			return sqlSession.selectList("com.nhnbasecamp.guestbook.dao.GuestbookArticleDao.selectList", paramMap);
 		} finally {
 			sqlSession.close();
 		}
@@ -36,7 +36,7 @@ public class MysqlGuestbookArticleDao implements GuestbookArticleDao {
 	public int insertArticle(GuestbookArticle guestbookArticle) throws Exception {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {
-			int count = sqlSession.insert("dao.GuestbookArticleDao.insert", guestbookArticle);
+			int count = sqlSession.insert("com.nhnbasecamp.guestbook.dao.GuestbookArticleDao.insert", guestbookArticle);
 			sqlSession.commit();
 			return count;
 		} finally {
@@ -47,7 +47,7 @@ public class MysqlGuestbookArticleDao implements GuestbookArticleDao {
 	public int updateArticle(GuestbookArticle guestbookArticle) throws Exception {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {
-			int count = sqlSession.update("dao.GuestbookArticleDao.update", guestbookArticle);
+			int count = sqlSession.update("com.nhnbasecamp.guestbook.dao.GuestbookArticleDao.update", guestbookArticle);
 			sqlSession.commit();
 			return count;
 		} finally {
