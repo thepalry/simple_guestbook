@@ -59,7 +59,7 @@ public class ListController {
 			@RequestParam(value="article", required=true) String article,
 			Model model) throws Exception {
 		
-		if(Pattern.matches(email, "^[_a-zA-Z0-9-\\.]+@[\\.a-zA-Z0-9-]+\\.[a-zA-Z]+$") == false) {
+		if(Pattern.matches("[\\w\\~\\-\\.]+@[\\w\\~\\-]+(\\.[\\w\\~\\-]+)+", email.trim()) == false) {
 			model.addAttribute("error", "이메일주소가 유효하지 않습니다.");
 			return "Error";
 		}
