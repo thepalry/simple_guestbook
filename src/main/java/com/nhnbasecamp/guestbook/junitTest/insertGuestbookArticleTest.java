@@ -3,12 +3,19 @@ package com.nhnbasecamp.guestbook.junitTest;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
+
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.model.InitializationError;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -19,6 +26,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.jndi.JndiTemplate;
+import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 
 import com.nhnbasecamp.guestbook.control.ListController;
 import com.nhnbasecamp.guestbook.dao.GuestbookArticleDao;
@@ -26,11 +35,11 @@ import com.nhnbasecamp.guestbook.vo.GuestbookArticle;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml",
-     "file:src/main/webapp/WEB-INF/spring/root-context.xml"})
+     "file:src/main/webapp/WEB-INF/spring/test-context.xml"})
 @WebAppConfiguration
 public class insertGuestbookArticleTest {
     @Mock
-    GuestbookArticleDao guestbookArticleDao;;
+    GuestbookArticleDao guestbookArticleDao;
     @InjectMocks
     private ListController listController;
     
@@ -38,7 +47,7 @@ public class insertGuestbookArticleTest {
     private WebApplicationContext wac;
 
     private MockMvc mockMvc;
-
+    
     @Before
     public void setUp() throws Exception {
          MockitoAnnotations.initMocks(this);
@@ -48,22 +57,20 @@ public class insertGuestbookArticleTest {
     @Test
     public void testInsertGuestbookArticle() throws Exception {
     	String orderCond = null;
-    	String email = anyString() + "@" + anyString() + "." + anyString();
-    	String pwd = anyString();
-    	String article = anyString();
+    	String email = "test34@test.com";
+    	String pwd = "1234";
+    	String article = "test1234";
     	GuestbookArticle guestbookArticle = new GuestbookArticle();
     	guestbookArticle.setEmail(email);
     	guestbookArticle.setPwd(pwd);
     	guestbookArticle.setArticle(article);
     	
-    	when(guestbookArticleDao.insertArticle(guestbookArticle)).thenReturn(1);
+    	when(guestbookArticleDao.insertArticle(guestbookArticle)).thenReturn(-1);
     	mockMvc.perform(post("/list")
     			.param("orderCond", orderCond)
     			.param("email", email)
     			.param("pwd", pwd)
     			.param("article", article))
     	.andExpect(status().isOk());
-    	
-    	verify(mockMvc);
     }
 }
