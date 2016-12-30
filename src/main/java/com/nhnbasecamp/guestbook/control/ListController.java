@@ -23,10 +23,6 @@ public class ListController {
 		this.guestbookArticleDao = guestbookArticleDao;
 	}
 	
-	public void setGuestbookArticleDao(GuestbookArticleDao guestbookArticleDao) {
-		this.guestbookArticleDao = guestbookArticleDao;
-	}
-	
 	@RequestMapping(value="/list", method = RequestMethod.GET)
 	public String executeGET(
 			@RequestParam(value="orderCond", required=false) String orderCond,
@@ -66,8 +62,9 @@ public class ListController {
 		guestbookArticle.setEmail(email);
 		guestbookArticle.setPwd(pwd);
 		guestbookArticle.setArticle(article);
+		model.addAttribute("guestbookArticle", guestbookArticle);
 		try {
-			guestbookArticleDao.insertArticle(guestbookArticle);
+			model.addAttribute("insertResult", guestbookArticleDao.insertArticle(guestbookArticle));
 		} catch (Exception e) {
 			model.addAttribute("error", "데이터를 입력하는데 문제가 발생하였습니다. 입력이 올바른지 학인해 주세요.");
 			return "Error";

@@ -1,7 +1,7 @@
 package com.nhnbasecamp.guestbook.junitTest;
 
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.Before;
@@ -20,7 +20,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.nhnbasecamp.guestbook.control.ListController;
 import com.nhnbasecamp.guestbook.dao.GuestbookArticleDao;
-import com.nhnbasecamp.guestbook.vo.GuestbookArticle;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml",
@@ -45,21 +44,12 @@ public class insertGuestbookArticleTest {
 
     @Test
     public void testInsertGuestbookArticle() throws Exception {
-    	String orderCond = null;
-    	String email = "test34@test.com";
-    	String pwd = "1234";
-    	String article = "test1234";
-    	GuestbookArticle guestbookArticle = new GuestbookArticle();
-    	guestbookArticle.setEmail(email);
-    	guestbookArticle.setPwd(pwd);
-    	guestbookArticle.setArticle(article);
-    	
-    	when(guestbookArticleDao.insertArticle(guestbookArticle)).thenReturn(-1);
     	mockMvc.perform(post("/list")
-    			.param("orderCond", orderCond)
-    			.param("email", email)
-    			.param("pwd", pwd)
-    			.param("article", article))
-    	.andExpect(status().isOk());
+    			.param("orderCond", (String) null)
+    			.param("email", "test34@test.com")
+    			.param("pwd", "1234")
+    			.param("article", "test1234"))
+    	.andExpect(status().isOk())
+    	.andExpect(model().attributeExists("insertResult"));
     }
 }

@@ -20,10 +20,6 @@ public class MysqlGuestbookArticleDao implements GuestbookArticleDao {
 		this.sqlSessionFactory = sqlSessionFactory;
 	}
 	
-	public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
-		this.sqlSessionFactory = sqlSessionFactory;
-	}
-	
 	public List<GuestbookArticle> getList(HashMap<String, Object> paramMap) throws Exception {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {

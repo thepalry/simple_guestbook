@@ -9,7 +9,7 @@ public class GuestbookArticle {
 	protected String article;
 	protected Date createdTime;
 	protected Date modifiedTime;
-	
+
 	public int getGno() {
 		return gno;
 	}

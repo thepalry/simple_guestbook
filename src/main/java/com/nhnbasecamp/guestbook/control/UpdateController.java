@@ -19,10 +19,6 @@ public class UpdateController {
 		this.guestbookArticleDao = guestbookArticleDao;
 	}
 	
-	public void setUpdateControllerDao(GuestbookArticleDao guestbookArticleDao) {
-		this.guestbookArticleDao = guestbookArticleDao;
-	}
-	
 	@RequestMapping(value="/update", method = RequestMethod.POST)
 	public String executePOST(
 			@RequestParam(value="gno", required=true) int gno,
@@ -36,11 +32,11 @@ public class UpdateController {
 		guestbookArticle.setEmail(email);
 		guestbookArticle.setArticle(article);
 		
-		if(pwd == null) { // ������Ʈ â ��û 
+		if(pwd == null) {
 			model.addAttribute("articles" , article);
 			return "Update";
 		}
-		else { // ������Ʈ ��û
+		else {
 			guestbookArticle.setPwd(pwd);
 			try {
 				guestbookArticleDao.updateArticle(guestbookArticle);
@@ -50,6 +46,5 @@ public class UpdateController {
 			}
 			return "redirect:list";
 		}
-		
 	}
 }
