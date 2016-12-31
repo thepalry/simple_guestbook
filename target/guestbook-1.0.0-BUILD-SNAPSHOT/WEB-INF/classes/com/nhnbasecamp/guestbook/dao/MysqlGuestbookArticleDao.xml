@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.nhnbasecamp.guestbook.dao.GuestbookArticleDao">
+ 
+ 	<resultMap type="GuestbookArticle" id="GuestbookArticleResultMap">
+ 		<id column="GNO" property="gno"/>
+ 		<result column="EMAIL"	property="email" />
+ 		<result column="PWD"	property="pwd" />
+ 		<result column="ARTICLE"	property="article" />
+ 		<result column="CREATED_TIME"	property="createdTime" javaType="java.sql.Date" />
+ 		<result column="MODIFIED_TIME"	property="modifiedTime" javaType="java.sql.Date" />
+ 	</resultMap>
+ 	
+ 	<select id="selectList" resultMap="GuestbookArticleResultMap" parameterType="map">
+ 		SELECT GNO, EMAIL, ARTICLE, CREATED_TIME, MODIFIED_TIME
+ 		FROM GUESTBOOK
+		ORDER BY
+		<choose>
+			<when test="orderCond == 'CREATED_TIME'">CREATED_TIME DESC</when>
+			<when test="orderCond == 'MODIFIED_TIME'">MODIFIED_TIME DESC</when>
+		</choose>
+ 	</select>
+ 	
+ 	 <select id="selectOne" resultType="com.nhnbasecamp.guestbook.vo.GuestbookArticle" parameterType="GuestbookArticle">
+ 		SELECT GNO, EMAIL, ARTICLE
+ 		FROM GUESTBOOK
+		WHERE EMAIL = ${email}
+ 	</select>
+ 	
+ 	
+ 	<insert id="insert" parameterType="GuestbookArticle">
+ 		INSERT INTO GUESTBOOK(EMAIL, PWD, ARTICLE, CREATED_TIME, MODIFIED_TIME)
+					VALUES (#{email}, #{pwd}, #{article}, now(), now())
+ 	</insert>
+ 	
+ 	<update id="update" parameterType="GuestbookArticle">
+ 		UPDATE GUESTBOOK
+ 		SET ARTICLE = #{article}, MODIFIED_TIME = now()
+ 		WHERE EMAIL = #{email} AND PWD = #{pwd} AND GNO = #{gno}
+ 	</update>
+ </mapper>

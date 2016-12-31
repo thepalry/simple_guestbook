@@ -2,6 +2,7 @@ package com.nhnbasecamp.guestbook.vo;
 
 import java.sql.Date;
 
+// 방명록 글 객체 정보
 public class GuestbookArticle {
 	protected int gno;
 	protected String email;

@@ -11,6 +11,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.annotation.WebInitParam;
 
+// 표현될 내용 인코딩 선택
 @WebFilter(
 		urlPatterns = "/*",
 		initParams = {

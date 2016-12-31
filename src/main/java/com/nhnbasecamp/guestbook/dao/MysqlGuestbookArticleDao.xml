@@ -4,6 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  <mapper namespace="com.nhnbasecamp.guestbook.dao.GuestbookArticleDao">
  
+ 	<!-- 받아올 데이터 정보 맵 -->
  	<resultMap type="GuestbookArticle" id="GuestbookArticleResultMap">
  		<id column="GNO" property="gno"/>
  		<result column="EMAIL"	property="email" />
@@ -13,6 +14,7 @@
  		<result column="MODIFIED_TIME"	property="modifiedTime" javaType="java.sql.Date" />
  	</resultMap>
  	
+ 	<!-- 목록 요청, orderCond에 따른 정렬 요청을 수행 -->
  	<select id="selectList" resultMap="GuestbookArticleResultMap" parameterType="map">
  		SELECT GNO, EMAIL, ARTICLE, CREATED_TIME, MODIFIED_TIME
  		FROM GUESTBOOK
@@ -23,18 +25,20 @@
 		</choose>
  	</select>
  	
+ 	<!-- 개별 item 선택, email로 선택한다. -->
  	 <select id="selectOne" resultType="com.nhnbasecamp.guestbook.vo.GuestbookArticle" parameterType="GuestbookArticle">
  		SELECT GNO, EMAIL, ARTICLE
  		FROM GUESTBOOK
 		WHERE EMAIL = ${email}
  	</select>
  	
- 	
+ 	<!-- 새 글 입력 -->
  	<insert id="insert" parameterType="GuestbookArticle">
  		INSERT INTO GUESTBOOK(EMAIL, PWD, ARTICLE, CREATED_TIME, MODIFIED_TIME)
 					VALUES (#{email}, #{pwd}, #{article}, now(), now())
  	</insert>
  	
+ 	<!-- 기존 글 수정 -->
  	<update id="update" parameterType="GuestbookArticle">
  		UPDATE GUESTBOOK
  		SET ARTICLE = #{article}, MODIFIED_TIME = now()

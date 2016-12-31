@@ -12,14 +12,16 @@ import com.nhnbasecamp.guestbook.vo.GuestbookArticle;
 
 @Component("guestbookArticleDao")
 public class MysqlGuestbookArticleDao implements GuestbookArticleDao {
-	
+	// Mybatis sqlSession
 	SqlSessionFactory sqlSessionFactory;
 	
+	// sqlSession 주입
 	@Autowired
 	public MysqlGuestbookArticleDao(SqlSessionFactory sqlSessionFactory) {
 		this.sqlSessionFactory = sqlSessionFactory;
 	}
 	
+	// 전체 목록 받아오기
 	public List<GuestbookArticle> getList(HashMap<String, Object> paramMap) throws Exception {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {
@@ -29,6 +31,7 @@ public class MysqlGuestbookArticleDao implements GuestbookArticleDao {
 		}
 	}
 	
+	// 새 글 입력
 	public int insertArticle(GuestbookArticle guestbookArticle) throws Exception {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {
@@ -40,6 +43,7 @@ public class MysqlGuestbookArticleDao implements GuestbookArticleDao {
 		}
 	}
 	
+	// 기존 글 업데이트
 	public int updateArticle(GuestbookArticle guestbookArticle) throws Exception {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {

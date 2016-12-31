@@ -1,3 +1,5 @@
+<!-- List View -->
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -6,6 +8,7 @@
 
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<!-- jQuery를 활용한 input 테스트 -->
 	<script src="http://code.jquery.com/jquery-3.1.1.js"></script>
 	<script>
 	
@@ -48,7 +51,7 @@
 	<jsp:include page="Header.jsp"/>
 
 	<h1>방명록</h1>
-	
+	<!-- 입력 폼 설정, post 명령시 현재 정렬 상태 유지하며 post 요청이 이루어지도록 -->
 	<c:choose>
 		<c:when test="${param.orderCond != null}">
 		<form action="list.do?orderCond=${param.orderCond}" method="post" id="insertform">
@@ -60,9 +63,10 @@
 		이메일 : <input type="text" name="email" id="email" value="" size="20"><br>
 		비밀번호 : <input type="password" name="pwd" id="pwd" value="" size="20"><br>
 		내용 : <input type="text" name="article" id="article" value="" size="100"><br>
-		<input type="button" value="등록" onclick="javascript:checkInput();">
+		<input type="button" value="등록" onclick="javascript:checkInput();">				<!-- 입력 확인을 위해 submit을 하지 않고 onclick으로 javascirpt 함수 실행 -->
 	</form>
 	
+	<!-- 목록 출력 -->
 	<h2>목록</h2>
 	<a href="list.do?orderCond=CREATED_TIME">작성 시간 순서</a>
 	<a href="list.do?orderCond=MODIFIED_TIME">수정 시간 순서</a>
